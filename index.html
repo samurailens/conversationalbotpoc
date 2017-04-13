@@ -31,7 +31,7 @@
 					   <input class="form-control" type="text" id="input" value="">   
 					</div>	
 					<div style="width:20%;float:right;">
-						<button class="btn btn-warning" >Send </button>
+						<button class="btn btn-warning" id="send">Send </button>
 					</div>
 				</div>
 				
@@ -114,6 +114,12 @@ $(document).keypress(function(e) {
     questionNum++;																		// increase questionNum count by 1
   }
 });
+
+$( "#send" ).click(function() {
+    bot();																						// run bot function when enter key pressed
+    questionNum++;
+});
+	
 $.get("https://ipinfo.io", function (response) {
     // $("#ip").html("IP: " + response.ip);
     $("#address").html("You're currently at:<br/> " + response.city + ", " + response.region);
