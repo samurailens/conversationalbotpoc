@@ -1,0 +1,145 @@
+<html>
+<head>
+ <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="chatui.css">
+<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+<div class="container " style="width:30%;">
+	<div id="container">
+		<div class="row" style="float:right;">
+			<div class="row">
+				<div id="messages" style="border: 1px solid white">
+					<div class="chat">
+						<div class="bubble me">Hello there!</div>
+						<div class="bubble me"><span id="address" style="font-weight:500"></span></div>
+						<div class="bubble me">Can I, Have your PNR for better experience???</div>
+						<div id="output1"></div>
+						<div id="output2"></div>
+						<div id="output3"></div>
+						<div id="output4"></div>
+						<div id="output5"></div>
+					</div>
+				</div>
+				<div style="height:3em !important;">
+					<div style="width:70%;float:left;margin-left:5%">
+					   <input class="form-control" type="text" id="input" value="">   
+					</div>	
+					<div style="width:20%;float:right;">
+						<button class="btn btn-warning" >Send </button>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+<!-- jquery for enter key press -->      
+<script src="https://code.jquery.com/jquery-3.0.0.js" integrity="sha256-jrPLZ+8vDxt2FnE1zvZXCkCcebI/C8Dt5xyaQBjxQIo=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+var questionNum = 0;													// keep count of question, used for IF condition.
+var question = '';				  // first question
+
+var output = document.getElementById('output1');				// store id="output" in output variable
+output.innerHTML = question;													// ouput first question
+
+function bot() { 
+    var input = document.getElementById("input").value;
+    console.log(input);
+	var output = document.getElementById('output2');
+    if (questionNum == 0) {
+    output.innerHTML = '<div class="bubble you"> ' + input + '</div><div class="bubble me"><p>Happa ten express</p><p>Tr. No:19578</p><p>Your next stop is Madgoan</p></div><div class="bubble me"><p>What would you like to have?<br/>Press</p><p>1 for veg</p><p>2 for non-veg</p></div>';// output response
+    document.getElementById("input").value = "";   		// clear text box
+    question = '';			    	// load next question		
+    setTimeout(timedQuestion, 2000);  	// output next question after 2sec delay
+	
+    }
+
+    else if (questionNum == 1) {
+	if (input == 1) {
+    var output = document.getElementById('output3');
+    output.innerHTML = '<div class="bubble you"> ' + input + '</div><p></p><div class="bubble me"><p>1. Veg Biriyani</p><p>2. South-Indians</p><p>3. North-Indians</p></div>';
+    document.getElementById("input").value = "";   
+    question = '';					      	
+    setTimeout(timedQuestion, 2000);// output next question after 2sec delay
+	
+    }
+
+    else if (input == 2) {
+	var output = document.getElementById('output3');
+    output.innerHTML = '<div class="bubble you"> ' + input + '</div><p></p><div class="bubble me"><p>1. Chicken Biriyani</p><p>2. Mutton Biriyani</p><p>3. Fish</p></div>';
+    document.getElementById("input").value = "";   
+    question = '';					      	
+    setTimeout(timedQuestion, 2000);
+    }
+    } 
+	else if (questionNum == 2) {
+	var output = document.getElementById('output4');
+    output.innerHTML = '<div class="bubble you"> ' + input + '</div><p></p><div class="bubble me"><p>Confirm Order?</p><p>1. Yes</p><p>2. No</p></div>';
+    document.getElementById("input").value = "";   
+    question = '';					      	
+    setTimeout(timedQuestion, 2000);// output response
+    }  
+	else if (questionNum == 3) {
+	if (input == 1) {
+	var output = document.getElementById('output5');
+    output.innerHTML = '<div class="bubble you"> ' + input + '</div><p></p><div class="bubble me"><h4>Order placed sucessfully!!!</h4> Your order will be delivered soon. <p>Thank You!!!</p></div>';// output response
+	document.getElementById("input").value = "";   
+	}
+
+    else if (input == 2) {
+	var output = document.getElementById('output5');
+    output.innerHTML = '<div class="bubble you"> ' + input + '</div><p></p><div class="bubble me">You did not order anything <p>Thank You!!!</p></div>';
+    document.getElementById("input").value = "";   
+	}
+    } 	
+}
+
+function timedQuestion() {
+    output.innerHTML = question;
+}
+
+//push enter key (using jquery), to run bot function.
+$(document).keypress(function(e) {
+  if (e.which == 13) {
+    bot();																						// run bot function when enter key pressed
+    questionNum++;																		// increase questionNum count by 1
+  }
+});
+$.get("http://ipinfo.io", function (response) {
+    // $("#ip").html("IP: " + response.ip);
+    $("#address").html("You're currently at:<br/> " + response.city + ", " + response.region);
+    $("#details").html(JSON.stringify(response, null, 4));
+    getLocation();
+}, "jsonp");
+
+//latlng=40.714224,-73.961452&
+//To get the geoCoordinates and call the Reverse Geocoder for actual location .
+    
+    function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";}
+    }
+    
+    function showPosition(position){
+     var geocodeURL =  "https://maps.googleapis.com/maps/api/geocode/json?latlng="+position.coords.latitude+","+position.coords.longitude+"&key=AIzaSyCHA8qw6TPIRaG2_shE26jeUmVInKkp1xg"
+        $.get(geocodeURL, function (response) {
+             console.log(response);
+              //$("#ip").html("IP: " + response);
+              $("#address").html("We've located you at<br/> " + response.results[0].formatted_address);
+              //$("#details").html(JSON.stringify(response, null, 4));
+        });
+    }         	
+</script>
+</body>
+</html>
